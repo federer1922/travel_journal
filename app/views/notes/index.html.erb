@@ -1,0 +1,27 @@
+<% if @notes.present? %>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2">
+        <p class="font-weight-bold">City</p>
+      </div>
+      <div class="col">
+        <p class="font-weight-bold">Description</p>
+      </div>
+    
+    </div>
+  </div>
+  
+  <div class="container">
+    
+    <% @notes.each do |note| %>
+      <div class="row">
+        <div class="col-sm-2">
+          <%= note.city %>
+        </div>
+        <div class="col">
+          <%= note.description %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -37,6 +37,8 @@ group :development, :test do
   # Note that rspec-rails 4.0 is still a pre release
   gem 'rspec-rails', '~> 4.0.0.rc1'
   gem 'pry'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
