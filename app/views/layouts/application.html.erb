@@ -11,7 +11,7 @@
 
   <body>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="<%=  %>">Travel journal</a>
+    <a class="navbar-brand" href="<%= root_path %>">Travel journal</a>
     <% if current_user.nil? %>
       <a class="navbar-brand" href="<%=  %>"><%= link_to "sign in", new_user_session_path, method: "get", class: "text-white" %>&nbsp;</a>
     <% else %>

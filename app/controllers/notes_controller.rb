@@ -16,6 +16,10 @@ class NotesController < ApplicationController
     end
   end
 
+  def edit
+    @note = Note.find params["note_id"]
+  end
+
   def note_params
     params.require(:note).permit(:city, :description)
   end

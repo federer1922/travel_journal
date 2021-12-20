@@ -22,7 +22,7 @@
       <div class="col-2">
         <p class="font-weight-bold">City</p>
       </div>
-      <div class="col-10">
+      <div class="col-6">
         <p class="font-weight-bold">Description</p>
       </div>
     </div>
@@ -34,8 +34,11 @@
         <div class="col-2">
           <%= note.city %>
         </div>
-        <div class="col-10">
+        <div class="col-6">
           <%= note.description %>
+        </div>
+        <div class="col-md-auto">
+          <%= link_to "Edit", edit_path(note_id: note.id), method: "get", class: "btn btn-primary" %>   
         </div>
       </div>
     <% end %>

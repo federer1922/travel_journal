@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   root to: "notes#index"
 
   post '/create', to: 'notes#create'
+
+  get '/edit', to: 'notes#edit'
+
 end

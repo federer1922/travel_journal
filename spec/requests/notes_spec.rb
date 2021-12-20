@@ -91,4 +91,12 @@ RSpec.describe "/note", type: :request do
       end
     end
   end
+
+  describe "GET /edit" do
+    it "render a successful response" do
+      get edit_path  params: { note_id: note.id }
+      
+      expect(response).to be_successful
+    end
+  end
 end
