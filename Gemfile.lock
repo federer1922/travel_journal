@@ -331,7 +331,7 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   listen (>= 3.0.5, < 3.2)
   multi_json
-  omniauth-google-oauth2 (~> 0.8.0)
+  omniauth-google-oauth2
   omniauth-rails_csrf_protection
   pg (>= 0.18, < 2.0)
   pry

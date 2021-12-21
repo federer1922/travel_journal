@@ -6,9 +6,11 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :notes, dependent: :destroy
-  
+
   def self.from_google(email:, full_name:, uid:, avatar_url:)
-    return nil unless email =~ /@mybusiness.com\z/
-    create_with(uid: uid, full_name: full_name, avatar_url: avatar_url).find_or_create_by!(email: email)
+    binding.pry
+    create_with(uid: uid, full_name: full_name, avatar_url: avatar_url).find_or_create_by!(email: email) do |user|
+      user.password = SecureRandom.urlsafe_base64
+    end 
   end
 end
