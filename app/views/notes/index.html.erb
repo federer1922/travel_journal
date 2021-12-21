@@ -19,11 +19,11 @@
 <% if @notes.present? %>
   <div class="container">
     <h5 style="font-weight: bold">Old notes</h5>
-    <table class="table table-striped" style="width:70%">
+    <table class="table table-striped" style="width:80%">
       <tbody>
         <% @notes.each do |note| %>
           <tr>
-            <td class="align-middle"><b>City:</b> <%= note.city %></td>
+            <td class="align-middle"><b>Date:</b> <%= note.created_at.to_date %>, <b>City:</b> <%= note.city %>, <b>Temperature:</b> <%= note.temperature %> °C, <b>Wind:</b> <%= note.wind %> m/s, <b>Cloudiness:</b> <%= note.clouds %> %</td>
             <td class="text-right"> 
               <%= link_to "Edit", edit_path(note_id: note.id), method: "get", class: "btn btn-outline-primary btn-sm" %>
               <form class="form-inline" action="/destroy" method=post style="display: inline;">

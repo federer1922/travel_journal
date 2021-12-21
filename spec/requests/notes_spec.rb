@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.describe "/note", type: :request do
   let!(:user) { FactoryBot.create(:user) }
   let!(:note) { FactoryBot.create(:note, user: user) }
-  let(:valid_attributes) { FactoryBot.attributes_for(:note, user: user) }
-  let(:invalid_attributes) { FactoryBot.attributes_for(:note, city: nil, user: user) }
+  let(:valid_attributes) { FactoryBot.attributes_for(:note, user: user, city: "Poznań") }
+  let(:invalid_attributes) { FactoryBot.attributes_for(:note, user: user, city: "Invalid city") }
+  let(:blank_attributes) { FactoryBot.attributes_for(:note, user: user, city: nil) }
 
   before { sign_in(user) }
 
@@ -45,6 +46,18 @@ RSpec.describe "/note", type: :request do
   end
 
   describe "POST /create" do
+    before do
+      allow(OpenweathermapService)
+      .to receive(:call)
+      .with("Poznań")
+      .and_return({ success: true, temperature: 0.77, wind: 1.34, clouds: 40 })
+  
+      allow(OpenweathermapService)
+      .to receive(:call)
+      .with("Invalid city")
+      .and_return({ success: false, http_status: "404", alert: "city not found" })
+    end
+
     context "with sign in user" do
       it "creates a new note with valid attributes" do
         expect {
@@ -59,7 +72,7 @@ RSpec.describe "/note", type: :request do
         expect(flash[:notice]).to eq "Note successfully created"
       end
 
-      it "does not create a new note with invalid attribute" do
+      it "does not create a new note with invalid attributes" do
         expect {
           post create_path, params: { note: invalid_attributes }
         }.to change(Note, :count).by(0)
@@ -67,6 +80,19 @@ RSpec.describe "/note", type: :request do
 
       it "redirects to the root_path with alert with invalid attribues" do
         post create_path, params: { note: invalid_attributes }
+
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq "404, city not found, enter valid city name"
+      end
+
+      it "does not create a new note with blank attributes" do
+        expect {
+          post create_path, params: { note: blank_attributes }
+        }.to change(Note, :count).by(0)
+      end
+
+      it "redirects to the root_path with alert with blank attribues" do
+        post create_path, params: { note: blank_attributes }
 
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to eq "City can't be blank"
@@ -120,7 +146,7 @@ RSpec.describe "/note", type: :request do
 
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
-        patch update_path, params: { note_id: note.id, note: invalid_attributes }
+        patch update_path, params: { note_id: note.id, note: blank_attributes }
 
         expect(response).to redirect_to(edit_path(note_id: note.id))
         expect(flash[:alert]).to eq "City can't be blank"
