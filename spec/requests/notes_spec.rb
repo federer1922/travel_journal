@@ -5,7 +5,7 @@ RSpec.describe "/note", type: :request do
   let!(:note) { FactoryBot.create(:note, user: user) }
   let(:valid_attributes) { FactoryBot.attributes_for(:note, user: user, city: "Poznań") }
   let(:invalid_attributes) { FactoryBot.attributes_for(:note, user: user, city: "Invalid city") }
-  let(:blank_attributes) { FactoryBot.attributes_for(:note, user: user, city: nil) }
+  let(:blank_attributes) { FactoryBot.attributes_for(:note, user: user, description: nil) }
 
   before { sign_in(user) }
 
@@ -95,7 +95,7 @@ RSpec.describe "/note", type: :request do
         post create_path, params: { note: blank_attributes }
 
         expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq "City can't be blank"
+        expect(flash[:alert]).to eq "Description can't be blank"
       end
     end
 
@@ -132,7 +132,7 @@ RSpec.describe "/note", type: :request do
         patch update_path, params: { note_id: note.id, note: valid_attributes }
         note.reload
 
-        expect(note.city).to eq(valid_attributes[:city])
+        expect(note.description).to eq(valid_attributes[:description])
       end
 
       it "redirects to index with notice" do
@@ -149,7 +149,7 @@ RSpec.describe "/note", type: :request do
         patch update_path, params: { note_id: note.id, note: blank_attributes }
 
         expect(response).to redirect_to(edit_path(note_id: note.id))
-        expect(flash[:alert]).to eq "City can't be blank"
+        expect(flash[:alert]).to eq "Description can't be blank"
       end
     end
   end

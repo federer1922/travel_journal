@@ -5,7 +5,7 @@ class NotesController < ApplicationController
 
   def create
     if current_user
-      note = current_user.notes.build(note_params)
+      note = current_user.notes.build(create_note_params)
       if note.valid?
         weather = OpenweathermapService.call(note.city)
         if weather[:success]
@@ -13,7 +13,7 @@ class NotesController < ApplicationController
           note.wind = weather[:wind]
           note.clouds = weather[:clouds]
           note.save
-          
+
           redirect_to root_path, notice: "Note successfully created" 
         else
           http_status = weather[:http_status]
@@ -35,7 +35,7 @@ class NotesController < ApplicationController
 
   def update
     note = Note.find params["note_id"]
-    if note.update(note_params)
+    if note.update(update_note_params)
       redirect_to root_path, notice: "Note successfully updated" 
     else
       redirect_to edit_path(note_id: note.id), alert: note.errors.full_messages.first
@@ -49,7 +49,11 @@ class NotesController < ApplicationController
     redirect_to root_path, notice: "Note successfully deleted"
   end
 
-  def note_params
+  def create_note_params
     params.require(:note).permit(:city, :description)
+  end
+
+  def update_note_params
+    params.require(:note).permit(:description)
   end
 end
