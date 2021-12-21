@@ -29,7 +29,7 @@ RSpec.describe "/note", type: :request do
       it "renders a successful response" do
         sign_out user
 
-        get root_path
+        get new_user_session_path
 
         expect(response).to be_successful
       end
@@ -112,8 +112,8 @@ RSpec.describe "/note", type: :request do
 
         post create_path, params: { note: valid_attributes }
 
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq "You need to sign in to create a note"
+        expect(response).to redirect_to(new_user_session_path)
+        expect(flash[:alert]).to eq "You need to sign in or sign up before continuing."
       end
     end
   end

@@ -4,28 +4,22 @@ class NotesController < ApplicationController
   end
 
   def create
-    if current_user
-      note = current_user.notes.build(create_note_params)
-      if note.valid?
-        weather = OpenweathermapService.call(note.city)
-        if weather[:success]
-          note.temperature = weather[:temperature]
-          note.wind = weather[:wind]
-          note.clouds = weather[:clouds]
-          note.save
-
-          redirect_to root_path, notice: "Note successfully created" 
-        else
-          http_status = weather[:http_status]
-          alert = weather[:alert]
-
-          redirect_to root_path, alert: "#{ http_status }, #{ alert }, enter valid city name"
-        end
+    note = current_user.notes.build(create_note_params)
+    if note.valid?
+      weather = OpenweathermapService.call(note.city)
+      if weather[:success]
+        note.temperature = weather[:temperature]
+        note.wind = weather[:wind]
+        note.clouds = weather[:clouds]
+        note.save
+        redirect_to root_path, notice: "Note successfully created" 
       else
-        redirect_to root_path, alert: note.errors.full_messages.first 
+        http_status = weather[:http_status]
+        alert = weather[:alert]
+        redirect_to root_path, alert: "#{ http_status }, #{ alert }, enter valid city name"
       end
     else
-      redirect_to root_path, alert: "You need to sign in to create a note"
+      redirect_to root_path, alert: note.errors.full_messages.first 
     end
   end
 
