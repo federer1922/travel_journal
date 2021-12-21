@@ -1,6 +1,6 @@
 class NotesController < ApplicationController  
   def index 
-    @notes = Note.where(user: current_user)
+    @notes = Note.order(:created_at).where(user: current_user)
   end
 
   def create
