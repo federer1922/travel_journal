@@ -95,8 +95,36 @@ RSpec.describe "/note", type: :request do
   describe "GET /edit" do
     it "render a successful response" do
       get edit_path  params: { note_id: note.id }
-      
+
       expect(response).to be_successful
+    end
+  end
+
+  describe "PATCH /update" do
+    context "with valid parameters" do
+      it "updates the requested note" do
+        patch update_path, params: { note_id: note.id, note: valid_attributes }
+        note.reload
+
+        expect(note.city).to eq(valid_attributes[:city])
+      end
+
+      it "redirects to index with notice" do
+        patch update_path, params: { note_id: note.id, note: valid_attributes }
+        note.reload
+
+        expect(response).to redirect_to(root_path)
+        expect(flash[:notice]).to eq "Note successfully updated"
+      end
+    end
+
+    context "with invalid parameters" do
+      it "renders a successful response (i.e. to display the 'edit' template)" do
+        patch update_path, params: { note_id: note.id, note: invalid_attributes }
+
+        expect(response).to redirect_to(edit_path(note_id: note.id))
+        expect(flash[:alert]).to eq "City can't be blank"
+      end
     end
   end
 end

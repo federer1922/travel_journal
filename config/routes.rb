@@ -8,4 +8,5 @@ Rails.application.routes.draw do
 
   get '/edit', to: 'notes#edit'
 
+  patch '/update', to: 'notes#update'
 end

@@ -20,6 +20,15 @@ class NotesController < ApplicationController
     @note = Note.find params["note_id"]
   end
 
+  def update
+    note = Note.find params["note_id"]
+    if note.update(note_params)
+      redirect_to root_path, notice: "Note successfully updated" 
+    else
+      redirect_to edit_path(note_id: note.id), alert: note.errors.full_messages.first
+    end
+  end
+
   def note_params
     params.require(:note).permit(:city, :description)
   end
