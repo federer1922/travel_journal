@@ -127,4 +127,19 @@ RSpec.describe "/note", type: :request do
       end
     end
   end
+
+  describe "DELETE /destroy" do
+    it "destroys the requested note" do
+      expect {
+        delete destroy_path,  params: { note_id: note.id }
+      }.to change(Note, :count).by(-1)
+    end
+
+    it "redirects back to index with notice" do
+      delete destroy_path,  params: { note_id: note.id }
+
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to eq "Note successfully deleted"
+    end
+  end
 end

@@ -29,6 +29,13 @@ class NotesController < ApplicationController
     end
   end
 
+  def destroy
+    note = Note.find params["note_id"]
+    note.destroy!
+
+    redirect_to root_path, notice: "Note successfully deleted"
+  end
+
   def note_params
     params.require(:note).permit(:city, :description)
   end

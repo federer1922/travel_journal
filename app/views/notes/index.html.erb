@@ -38,7 +38,13 @@
           <%= note.description %>
         </div>
         <div class="col-md-auto">
-          <%= link_to "Edit", edit_path(note_id: note.id), method: "get", class: "btn btn-primary" %>   
+          <%= link_to "Edit", edit_path(note_id: note.id), method: "get", class: "btn btn-outline-primary" %>  
+          <form class="form-inline" action="/destroy" method=post style="display: inline;">
+            <input type="hidden" value="delete" name="_method">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token() %>"/>
+            <input type="hidden" name="note_id" value="<%= note.id %>">
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+          </form>
         </div>
       </div>
     <% end %>
