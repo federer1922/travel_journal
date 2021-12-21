@@ -18,35 +18,27 @@
 
 <% if @notes.present? %>
   <div class="container">
-    <div class="row">
-      <div class="col-2">
-        <p class="font-weight-bold">City</p>
-      </div>
-      <div class="col-6">
-        <p class="font-weight-bold">Description</p>
-      </div>
-    </div>
-  </div>
-  
-  <div class="container">  
-    <% @notes.each do |note| %>
-      <div class="row">
-        <div class="col-2">
-          <%= note.city %>
-        </div>
-        <div class="col-6">
-          <%= note.description %>
-        </div>
-        <div class="col-md-auto">
-          <%= link_to "Edit", edit_path(note_id: note.id), method: "get", class: "btn btn-outline-primary" %>  
-          <form class="form-inline" action="/destroy" method=post style="display: inline;">
-            <input type="hidden" value="delete" name="_method">
-            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token() %>"/>
-            <input type="hidden" name="note_id" value="<%= note.id %>">
-            <button type="submit" class="btn btn-outline-danger">Delete</button>
-          </form>
-        </div>
-      </div>
-    <% end %>
+    <h5 style="font-weight: bold">Old notes</h5>
+    <table class="table table-striped" style="width:70%">
+      <tbody>
+        <% @notes.each do |note| %>
+          <tr>
+            <td class="align-middle"><b>City:</b> <%= note.city %></td>
+            <td class="text-right"> 
+              <%= link_to "Edit", edit_path(note_id: note.id), method: "get", class: "btn btn-outline-primary btn-sm" %>
+              <form class="form-inline" action="/destroy" method=post style="display: inline;">
+                <input type="hidden" value="delete" name="_method">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token() %>"/>
+                <input type="hidden" name="note_id" value="<%= note.id %>">
+                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td colspan=2><b>Description:</b> <%= note.description %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 <% end %>
