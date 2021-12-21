@@ -28,7 +28,9 @@ gem 'jbuilder', '~> 2.7'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
-gem 'devise'
+gem 'devise', github: 'heartcombo/devise'
+gem 'omniauth-google-oauth2', '~> 0.8.0'
+gem "omniauth-rails_csrf_protection"
 gem 'rexml', '~> 3.2', '>= 3.2.5'
 gem "http"
 gem "multi_json"
